@@ -1,14 +1,28 @@
+SET SERVEROUTPUT ON
 
 declare
+passport_proc  person.passport%TYPE;
+country_in_proc country.country%TYPE;
+country_out_proc country.country%TYPE;
+cursor traveler_table
+is
+select
+*
+from 
+table(Person_traveler('Yama Bob','Italy'));
 begin
 
-select * from table(Person_traveler('Yama Bob',TO_DATE('2001/11/21', 'yyyy')));
+for rec in traveler_table 
+loop
+dbms_output.put_line(rec.person_name);
+dbms_output.put_line(rec.country);
+end loop;
 
-end;
+/*
 Check_migration(
-coury_in => 'Chaina',
-coury_out => 'Japan',
-date_migrate => to_date('01-JAN-2000', 'DD/MON/YYYY'),
-pass => 'PJ456'
-); 
+'Japan',
+ 'PJ123',
+ 'China' ,
+ to_date('1977/07/22', 'yyyy/mm/dd')
+ ); */
 end;

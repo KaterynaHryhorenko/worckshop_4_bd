@@ -1,56 +1,27 @@
+
 SET SERVEROUTPUT ON
+
 CREATE OR REPLACE PROCEDURE Check_migration (coury_in In country.country%TYPE, 
 pass In person.passport%TYPE,
 coury_out IN country.country%TYPE,
 date_migrate IN migrations.date_migration%TYPE)
 is
-    country_ex EXCEPTION;
-    person_ex EXCEPTION;
-    country_person_ex EXCEPTION;
-    i INT := 1;
-    CURSOR countries IS
-    SELECT
-        country
-    FROM
-        country;
-
-    CURSOR people IS
-    SELECT
-        passport
-    FROM
-        person;
-
+/*
+pass  person.passport%TYPE:= 'PJ123';
+coury_in country.country%TYPE := 'Italy';
+coury_out country.country%TYPE := 'Japan';
+date_migrate date := to_date('1977/07/22', 'yyyy/mm/dd');
+*/
 BEGIN
-    FOR rec IN people LOOP 
-    IF ( rec.passport = pass) THEN
-        i := i + 2;
-    END IF;
-    END LOOP;
-
-    FOR rec IN countries LOOP 
-    IF ( rec.country = coury_in and rec.country = coury_out) THEN
-        i := i - 1;
-    END IF;
-    END LOOP;
-    IF ( i = 3 ) THEN
-        RAISE country_ex;
-    ELSIF ( i = 0 ) THEN
-        RAISE person_ex;
-    ELSIF ( i = 1 ) THEN
-        RAISE country_person_ex;
-    END IF;
-    insert into migrations(date_migration,passport,country_in,country_out) values (date_migrations,pass,coury_in,coury_out);
-    return;
+update migrations set 
+    date_migration = date_migrate
+    where country_in = coury_in and
+    country_out = coury_out and
+    pass = pass;
+ return;
 EXCEPTION
-    WHEN country_ex THEN
-        dbms_output.put_line('Country does not exist');
-    WHEN person_ex THEN
-        dbms_output.put_line('Person does not exist');
-    WHEN country_person_ex THEN
-        dbms_output.put_line('Person and country does not exist');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Something else went wrong - '
-                             || sqlcode
-                             || ' : '
-                             || sqlerrm);
+    WHEN ACCESS_INTO_NULL then
+    dbms_output.put_line('Country or person does not exist');
+
 END;
+
