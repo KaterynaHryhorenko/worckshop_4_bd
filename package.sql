@@ -1,17 +1,18 @@
---drop view person_migration;
---drop type traveler_row;
---drop type traveler_table_type;
---drop function Person_traveler;
-declare
+create or replace function Person_traveler(peron_traveler char, year_migration date)
+return traveler_table_type
+ PIPELINED
+        is
+result_table traveler_table_type := traveler_table_type();
 begin
+for cursor_traveler in (select name,country_out,date_migration from person_migration
+WHERE country_in = native_country1
+and name = person_traveler
+and year_migration = )
+loop
+result_table.extend;
+result_table (result_table.last) := traveler_row(cursor.name,
+                                                cursor.country_out,
+                                                cursor.date_migration);
+end loop;
 
-select * from table(Person_traveler('Yama Bob',TO_DATE('2001/11/21', 'yyyy')));
-
-end;
-Check_migration(
-coury_in => 'Chaina',
-coury_out => 'Japan',
-date_migrate => to_date('01-JAN-2000', 'DD/MON/YYYY'),
-pass => 'PJ456'
-); 
 end;
