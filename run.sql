@@ -41,4 +41,9 @@ Check_migration(
   to_date('2001/07/22', 'yyyy/mm/dd'),
  to_date('2001/11/11', 'yyyy/mm/dd')
  );
+ 
+  for rec in traveler_table 
+loop
+dbms_output.put_line(rec.person_name || rec.date_migration);
+end loop;
 end;
