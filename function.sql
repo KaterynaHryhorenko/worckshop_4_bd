@@ -11,15 +11,15 @@ from migrations
 join person on person.passport = migrations.person_passport;
 
 
-CREATE type traveler_row as object(
+CREATE or replace type traveler_row as object(
 person_name char(60)
 ,date_migration date
 ) 
-
+/
 create type traveler_table_type is table of traveler_row;
+/
 
-
---скільки разів боб мандрував зі своєї рідної країни
+--instance now many times bob was in italy
 create or replace function Person_traveler(name_traveler CHAR,country_travel char)
 return traveler_table_type
 

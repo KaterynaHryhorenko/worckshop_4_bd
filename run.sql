@@ -22,7 +22,7 @@ Check_migration(
  'PJ123',
  'Chiana' ,
  to_date('1977/07/22', 'yyyy/mm/dd'),
-  to_date('2001/11/29', 'yyyy/mm/dd')
+  to_date('2001/11/11', 'yyyy/mm/dd')
  ); 
  
   --updated
@@ -31,7 +31,7 @@ Check_migration(
  'PJ123',
  'Italy',
   to_date('2001/07/22', 'yyyy/mm/dd'),
- to_date('2001/11/29', 'yyyy/mm/dd')
+ to_date('2001/11/11', 'yyyy/mm/dd')
  ); 
  -- if unique constraint fails
 Check_migration(
@@ -39,6 +39,6 @@ Check_migration(
  'PJ123',
  'Italy',
   to_date('2001/07/22', 'yyyy/mm/dd'),
- to_date('2001/11/29', 'yyyy/mm/dd')
+ to_date('2001/11/11', 'yyyy/mm/dd')
  );
 end;
