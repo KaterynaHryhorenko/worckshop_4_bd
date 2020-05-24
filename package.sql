@@ -2,7 +2,7 @@ create or replace PACKAGE traveler_pack
 is
 type traveler_type_row is record(
 person_name char(60)
-,country char(60)
+,date_migration date
 );
 
 type traveler_table is table of traveler_type_row;
@@ -24,9 +24,9 @@ return traveler_table
 pipelined
 is
 begin
-for cursor_travels in (select name,country_out  from person_migration 
-WHERE country_in = native_country1
-and name_traveler=name and country_out = country_travel)
+for cursor_travels in (select person_name,date_migration from person_migration 
+WHERE country_in = native_country
+and name_traveler=person_name and country_out = country_travel)
 loop
 pipe row(cursor_travels);
 end loop;
@@ -37,12 +37,6 @@ pass In person.passport%TYPE,
 coury_out IN country.country%TYPE,
 date_migrate IN migrations.date_migration%TYPE)
 is
-/*
-pass  person.passport%TYPE:= 'PJ123';
-coury_in country.country%TYPE := 'Italy';
-coury_out country.country%TYPE := 'Japan';
-date_migrate date := to_date('1977/07/22', 'yyyy/mm/dd');
-*/
 BEGIN
 update migrations set 
     date_migration = date_migrate

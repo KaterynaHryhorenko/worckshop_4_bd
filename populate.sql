@@ -16,6 +16,21 @@ INSERT INTO country (
     region_fk,
     country
 ) VALUES (
+    'Europe',
+    'Ukraine'
+);
+
+INSERT INTO country (
+    region_fk,
+    country
+) VALUES (
+    'Europe',
+    'Spain'
+);
+INSERT INTO country (
+    region_fk,
+    country
+) VALUES (
     'Asia',
     'China'
 );
@@ -32,10 +47,10 @@ INSERT INTO country (
 );
 
 INSERT INTO person (
-    name,
+    person_name,
     passport,
     date_of_birth,
-    native_country1
+    native_country
 ) VALUES (
     'Jun Huan',
     'PC123',
@@ -44,10 +59,33 @@ INSERT INTO person (
 );
 
 INSERT INTO person (
-    name,
+    person_name,
     passport,
     date_of_birth,
-    native_country1
+    native_country
+) VALUES (
+    'Pedro Osno',
+    'PS123',
+    TO_DATE('1989/01/22', 'yyyy/mm/dd'),
+    'Spain'
+);
+
+INSERT INTO person (
+    person_name,
+    passport,
+    date_of_birth,
+    native_country
+) VALUES (
+    'Kolya Chaika',
+    'PU123',
+    TO_DATE('1999/02/28', 'yyyy/mm/dd'),
+    'Ukraine'
+);
+INSERT INTO person (
+    person_name,
+    passport,
+    date_of_birth,
+    native_country
 ) VALUES (
     'Yama Bob',
     'PJ123',
@@ -78,41 +116,69 @@ INSERT INTO migrations (
     'Japan',
     'Italy'
 );
-SET SERVEROUTPUT ON
-CREATE OR REPLACE PROCEDURE Check_country (country IN country.country%TYPE, answer out BOOLEAN)
-is
-begin
-FOR rec IN countries
-loop
-if (rec.country = 'Gabon')then
-DBMS_OUTPUT.put_line('Gabon');
-end if;
-end loop;
-DBMS_OUTPUT.put_line('country does not exist');
-end;
+INSERT INTO migrations (
+    date_migration,
+    person_passport,
+    country_in,
+    country_out
+) VALUES (
+    TO_DATE('2003/12/01', 'yyyy/mm/dd'),
+    'PC123',
+    'China',
+    'Italy'
+);
+INSERT INTO migrations (
+    date_migration,
+    person_passport,
+    country_in,
+    country_out
+) VALUES (
+    TO_DATE('2003/12/01', 'yyyy/mm/dd'),
+    'PU123',
+    'Ukraine',
+    'Italy'
+);
+INSERT INTO migrations (
+    date_migration,
+    person_passport,
+    country_in,
+    country_out
+) VALUES (
+    TO_DATE('2002/05/01', 'yyyy/mm/dd'),
+    'PS123',
+    'Ukraine',
+    'Japan'
+);
+INSERT INTO migrations (
+    date_migration,
+    person_passport,
+    country_in,
+    country_out
+) VALUES (
+    TO_DATE('2001/02/01', 'yyyy/mm/dd'),
+    'PS123',
+    'Spain',
+    'Ukraine'
+);
 
-declare 
-countris country.country%TYPE := 'Gabon';
-i NUMBER;
-cursor countries
-is
-select 
-country 
-from country;
-BEGIN
+INSERT INTO migrations (
+    date_migration,
+    person_passport,
+    country_in,
+    country_out
+) VALUES (
+    TO_DATE('2011/11/29', 'yyyy/mm/dd'),
+    'PJ123',
+    'Japan',
+    'Italy'
+);
+INSERT INTO gdp(country_fk,date_update,gdp)values('Ukraine',TO_DATE('2001/02/01', 'yyyy/mm/dd'),130000000);
+INSERT INTO gdp(country_fk,date_update,gdp)values('Spain',TO_DATE('2001/05/01', 'yyyy/mm/dd'),38000000);
 
-END;
+insert into city (country_fk,city) values ('Ukraine','Kiev');
+insert into city (country_fk,city) values ('Ukraine','Vinnitsa');
 
-DECLARE
-  
-  CHECK_CONSTRAINT_VIOLATED EXCEPTION;
-  PRAGMA EXCEPTION_INIT(CHECK_CONSTRAINT_VIOLATED, -2290);
-BEGIN
-  INSERT INTO SOME_TABLE(COL1) VALUES ('X'); 
-  RETURN;
-EXCEPTION
-  WHEN CHECK_CONSTRAINT_VIOLATED THEN  
-    DBMS_OUTPUT.PUT_LINE('INSERT failed due to check constraint violation');
-  WHEN OTHERS THEN                     
-    DBMS_OUTPUT.PUT_LINE('Something else went wrong - ' || SQLCODE ||' : ' || SQLERRM);
-END;
+
+insert into land_price (date_update, city_fk, sale_price, square) values (TO_DATE('2001/05/01 17:28', 'yyyy/mm/dd hh24:mi'),'Kiev',20,1);
+insert into land_price (date_update, city_fk, sale_price, square) values (TO_DATE('2001/05/01 15:15', 'yyyy/mm/dd hh24:mi'),'Kiev',25,1);
+

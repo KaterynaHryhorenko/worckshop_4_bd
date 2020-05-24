@@ -1,13 +1,9 @@
---drop view person_migration;
---drop type traveler_row;
---drop type traveler_table_type;
---drop function Person_traveler;
 
 create view person_migration
 as
 select 
-name ,
-native_country1,
+person_name ,
+native_country,
 country_in,
 country_out,
 migrations.date_migration
@@ -17,7 +13,7 @@ join person on person.passport = migrations.person_passport;
 
 CREATE type traveler_row as object(
 person_name char(60)
-,country char(60)
+,date_migration date
 ) 
 
 create type traveler_table_type is table of traveler_row;
@@ -30,14 +26,14 @@ return traveler_table_type
 IS
 result_table traveler_table_type := traveler_table_type();
 begin
-for cursor_travels in (select name,country_out from person_migration 
-WHERE country_in = native_country1
-and name_traveler=name and country_out = country_travel)
+for cursor_travels in (select person_name,country_out,date_migration from person_migration 
+WHERE country_in = native_country
+and name_traveler=person_name and country_out = country_travel)
 loop
 
 result_table.extend;
-result_table (result_table.last) := traveler_row(cursor_travels.name,
-                                              cursor_travels.country_out);
+result_table (result_table.last) := traveler_row(cursor_travels.person_name,
+                                              cursor_travels.date_migration);
 end loop;
 return result_table;
 end;
